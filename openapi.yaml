@@ -1,0 +1,63 @@
+openapi: 3.0.3
+info:
+  title: Task Manager API
+  version: 1.0.0
+paths:
+  /auth/request-otp:
+    post:
+      summary: Request a one-time password via email
+      operationId: requestOtp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OTPRequest'
+      responses:
+        '200':
+          description: OTP successfully sent
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "OTP sent to your email"
+        '400':
+          description: Bad Request (e.g. invalid email format)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    OTPRequest:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+          example: "user@example.com"
+
+    ErrorResponse:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          example: 400
+        error:
+          type: string
+          example: "Bad Request"
+        message:
+          type: string
+          example: "body/email must match format \"email\""
