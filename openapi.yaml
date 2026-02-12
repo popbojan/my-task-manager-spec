@@ -94,6 +94,8 @@ components:
 
     AuthTokenResponse:
       type: object
+      required:
+        - accessToken
       properties:
         accessToken:
           type: string
