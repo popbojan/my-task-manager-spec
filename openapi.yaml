@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Task Manager API
-  version: 1.0.2
+  version: 1.0.3
 paths:
   /auth/request-otp:
     post:
@@ -36,23 +36,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /auth/verify-otp:
+  /auth/login-with-otp:
     post:
-      summary: Verify OTP and generate access token
-      operationId: verifyOtp
+      summary: Login using an email and the received OTP
+      operationId: loginWithOtp
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OTPVerifyRequest'
+              $ref: '#/components/schemas/LoginRequest'
       responses:
         '200':
           description: OTP verified and access token generated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthTokenResponse'
+                $ref: '#/components/schemas/LoginResponse'
         '401':
           description: Invalid or expired OTP
           content:
@@ -78,7 +78,7 @@ components:
           format: email
           example: "user@example.com"
 
-    OTPVerifyRequest:
+    LoginRequest:
       type: object
       required:
         - email
@@ -92,7 +92,7 @@ components:
           type: string
           example: "123456"
 
-    AuthTokenResponse:
+    LoginResponse:
       type: object
       required:
         - accessToken
